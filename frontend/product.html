@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlobalCart | Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/styles.css" rel="stylesheet" />
+  </head>
+  <body data-page="product">
+    <nav class="navbar navbar-expand-lg navbar-globalcart">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">GlobalCart</a>
+        <div class="collapse navbar-collapse show" id="nav">
+          <ul class="navbar-nav ms-auto gap-2">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/static/products.html">Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="/static/orders.html">My Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="/static/admin.html">Admin</a></li>
+            <li class="nav-item d-flex align-items-center">
+              <span class="nav-link" id="customerLabel"></span>
+            </li>
+            <li class="nav-item">
+              <button class="btn btn-sm btn-outline-light" id="loginBtn" type="button">Login</button>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/static/cart.html">
+                Cart <span class="badge badge-cart" id="cartCount">0</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <div id="pageError" class="text-danger small mb-3"></div>
+
+      <div id="productContainer" class="card shadow-sm">
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-md-5">
+              <img id="pImg" class="product-detail-img rounded" alt="Product" />
+            </div>
+            <div class="col-md-7">
+              <h3 id="pName" class="fw-bold"></h3>
+              <div id="pBrand" class="text-muted mb-3"></div>
+              <p id="pDesc" class="mb-4"></p>
+
+              <div class="mb-3">
+                <div class="d-flex align-items-baseline gap-2">
+                  <div class="fs-3 fw-bold" id="pSell"></div>
+                  <div class="price-original" id="pList"></div>
+                  <span class="badge text-bg-success" id="pDisc"></span>
+                </div>
+                <div class="text-muted small">Inclusive of taxes (demo)</div>
+              </div>
+
+              <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-end">
+                <div style="width: 160px;">
+                  <label class="form-label">Quantity</label>
+                  <input id="qty" class="form-control" type="number" min="1" max="20" value="1" />
+                </div>
+                <button id="addBtn" class="btn btn-accent btn-lg">Add to Cart</button>
+                <a class="btn btn-outline-primary btn-lg" href="/static/cart.html">Go to Cart</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">GlobalCart</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">...</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

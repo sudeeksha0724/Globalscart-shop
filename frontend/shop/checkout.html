@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout · GlobalSCART Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="shop.css?v=43" rel="stylesheet" />
+  </head>
+  <body data-page="checkout">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background:#0b1220;">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="index.html">GlobalSCART Shop</a>
+        <div class="ms-auto d-flex gap-2 align-items-center">
+          <span class="badge text-bg-secondary" id="navCustomerLabel">Guest</span>
+          <a class="btn btn-sm btn-outline-light" id="navSignInLink" href="login.html">Sign in</a>
+          <button class="btn btn-sm btn-outline-light d-none" id="navSignOut" type="button">Sign out</button>
+          <a class="btn btn-sm btn-outline-light" href="/bi/">Analytics</a>
+          <a class="btn btn-sm btn-primary" href="cart.html">Cart <span class="badge text-bg-light ms-1" data-cart-count>0</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <h1 class="h3 fw-semibold">Checkout</h1>
+          <div class="text-secondary">Place an order (optionally simulate a payment failure).</div>
+
+          <div class="card shadow-sm mt-3">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Payment method</label>
+                  <select class="form-select" id="paymentMethod">
+                    <option value="UPI">UPI</option>
+                    <option value="CARD">Card</option>
+                    <option value="NETBANKING">Netbanking</option>
+                    <option value="WALLET">Wallet</option>
+                  </select>
+                </div>
+                <div class="col-md-6 d-none" id="devFailureSim">
+                  <label class="form-label">Failure simulation</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="simulateFail" />
+                    <label class="form-check-label" for="simulateFail">Simulate payment failure</label>
+                  </div>
+                  <input class="form-control form-control-sm mt-2" id="failureReason" placeholder="Reason (e.g., BANK_DECLINED)" />
+                </div>
+              </div>
+
+              <hr class="my-4" />
+
+              <div class="fw-semibold mb-3">Delivery address</div>
+              <div class="mb-3" id="savedAddressSection">
+                <label class="form-label">Select a saved address (optional)</label>
+                <select class="form-select" id="savedAddressSelect">
+                  <option value="">-- Enter a new address --</option>
+                </select>
+                <div class="mt-2">
+                  <a href="addresses.html" class="link-primary small">Manage saved addresses</a>
+                </div>
+              </div>
+
+              <div id="newAddressFields">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Recipient name *</label>
+                    <input class="form-control" id="recipientName" placeholder="Full name" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Phone *</label>
+                    <input class="form-control" id="recipientPhone" placeholder="10-digit mobile number" required maxlength="10" pattern="\d{10}" />
+                    <div class="form-text">Enter 10-digit mobile number (numbers only)</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Address line 1 *</label>
+                    <input class="form-control" id="addressLine1" placeholder="Street address, apartment, suite, etc." required />
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Address line 2 (optional)</label>
+                    <input class="form-control" id="addressLine2" placeholder="Landmark, nearby place" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">City *</label>
+                    <input class="form-control" id="addressCity" placeholder="City" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">State *</label>
+                    <select class="form-select" id="addressState" required>
+                      <option value="">Select State</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Postal code *</label>
+                    <input class="form-control" id="addressPostal" placeholder="6-digit PIN code" required maxlength="6" pattern="\d{6}" />
+                    <div class="form-text">Enter 6-digit PIN code (numbers only)</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Country *</label>
+                    <input class="form-control" id="addressCountry" placeholder="Country" value="India" required />
+                  </div>
+                </div>
+                <div class="form-check mt-3">
+                  <input class="form-check-input" type="checkbox" id="saveAddress" />
+                  <label class="form-check-label" for="saveAddress">Save this address for future orders</label>
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100 mt-4" id="placeOrderBtn" type="button">Place order</button>
+            </div>
+          </div>
+
+          <div class="card shadow-sm mt-3">
+            <div class="card-body">
+              <div class="fw-semibold mb-2">Promo code</div>
+              <div class="d-flex gap-2">
+                <input class="form-control" id="promoCodeInput" placeholder="e.g. WELCOME10" />
+                <button class="btn btn-outline-primary" id="applyPromoBtn" type="button">Apply</button>
+              </div>
+              <div class="small text-secondary mt-2" id="promoMsg"></div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <a href="cart.html" class="link-secondary">Back to cart</a>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="fw-semibold mb-2">Order summary</div>
+              <div id="checkoutSummary" class="small text-secondary">Taxes are estimated at 7%.</div>
+              <div class="mt-2" id="checkoutItems"></div>
+              <div class="mt-3">
+                <div class="d-flex justify-content-between">
+                  <div class="text-secondary">Subtotal</div>
+                  <div id="checkoutSubtotal"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div class="text-secondary">Tax</div>
+                  <div id="checkoutTax"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1 d-none" id="checkoutPromoRow">
+                  <div class="text-secondary">Promo <span id="checkoutPromoCode"></span></div>
+                  <div class="text-success">-<span id="checkoutPromoDiscount"></span></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="fw-semibold">Total</div>
+                  <div class="fw-semibold" id="checkoutTotal"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="gc-confirm-overlay d-none" id="orderConfirmOverlay" aria-hidden="true">
+      <div class="gc-confetti" id="orderConfirmConfetti" aria-hidden="true"></div>
+      <div class="gc-confirm-card shadow">
+        <div class="gc-confirm-check" aria-hidden="true">
+          <svg viewBox="0 0 52 52" class="gc-confirm-svg">
+            <circle class="gc-confirm-circle" cx="26" cy="26" r="25" fill="none" />
+            <path class="gc-confirm-tick" fill="none" d="M14 27 l7 7 l17 -17" />
+          </svg>
+        </div>
+        <div class="h5 mb-1 fw-semibold">Order confirmed</div>
+        <div class="text-secondary" id="orderConfirmText">Processing...</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="shop.js?v=23"></script>
+  </body>
+</html>

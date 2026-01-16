@@ -1,0 +1,147 @@
+:root {
+  --gc-dark: #131921;
+  --gc-accent: #febd69;
+}
+
+body {
+  background: #f6f7fb;
+}
+
+.navbar-globalcart {
+  background: var(--gc-dark);
+}
+
+.navbar-globalcart .navbar-brand,
+.navbar-globalcart .nav-link {
+  color: #fff;
+}
+
+.navbar-globalcart .nav-link:hover {
+  color: var(--gc-accent);
+}
+
+.btn-accent {
+  background: var(--gc-accent);
+  border-color: var(--gc-accent);
+  color: #111;
+}
+
+.btn-accent:hover {
+  filter: brightness(0.95);
+}
+
+.product-card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  background: #fff;
+}
+
+.product-detail-img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.badge-cart {
+  background: var(--gc-accent);
+  color: #111;
+}
+
+.gc-voice-btn.listening {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  animation: gc-voice-pulse 1s ease-in-out infinite;
+}
+
+@keyframes gc-voice-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(13, 110, 253, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+  }
+}
+
+.gc-timeline {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.gc-step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.gc-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #dee2e6;
+}
+
+.gc-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #dee2e6;
+  margin: 0 auto 6px;
+}
+
+.gc-step.completed {
+  color: #198754;
+}
+
+.gc-step.completed .gc-dot {
+  background: #198754;
+}
+
+.gc-step.completed:not(:last-child)::after {
+  background: #198754;
+}
+
+.gc-step.active {
+  color: #0d6efd;
+}
+
+.gc-step.active .gc-dot {
+  background: #0d6efd;
+}
+
+.gc-step.cancelled {
+  color: #dc3545;
+}
+
+.gc-step.cancelled .gc-dot {
+  background: #dc3545;
+}
+
+.gc-label {
+  font-weight: 600;
+}
+
+.gc-ts {
+  font-size: 11px;
+  color: #6c757d;
+  min-height: 14px;
+}

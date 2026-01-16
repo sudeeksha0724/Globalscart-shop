@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in · GlobalSCART Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="shop.css?v=43" rel="stylesheet" />
+  </head>
+  <body data-page="login" style="background:#0b1220;">
+    <main class="container py-5" style="max-width: 980px;">
+      <div class="text-center mb-4">
+        <div class="h3 fw-semibold text-white mb-1">GlobalSCART Shop</div>
+        <div class="text-secondary">Sign in to continue</div>
+      </div>
+
+      <div class="gc-login-stage gc-login-stage--solo" id="gcLoginStage">
+        <div class="gc-login-mascot d-none" id="gcLoginMascot" aria-hidden="true">
+          <div class="gc-mascot-scene">
+            <div class="gc-mascot-purple">
+              <div class="gc-mascot-eyes">
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+              </div>
+            </div>
+            <div class="gc-mascot-black">
+              <div class="gc-mascot-eyes">
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+              </div>
+            </div>
+            <div class="gc-mascot-yellow">
+              <div class="gc-mascot-eyes">
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+              </div>
+            </div>
+            <div class="gc-mascot-orange">
+              <div class="gc-mascot-eyes">
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+                <span class="gc-mascot-eye"><span class="gc-mascot-pupil"></span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gc-login-panel">
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-fill" id="signupTab" type="button" aria-pressed="true">Sign up</button>
+                <button class="btn btn-outline-primary flex-fill" id="loginTab" type="button" aria-pressed="false">Log in</button>
+              </div>
+
+              <div class="mt-3" id="signupBox">
+            <div class="h5 fw-semibold mb-1">Create account</div>
+            <div class="text-secondary small">Enter your details, then verify OTP to create your account.</div>
+
+            <div class="mt-3">
+              <label class="form-label">Name</label>
+              <input class="form-control" id="nameInput" placeholder="Your name" autocomplete="name" />
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Email</label>
+              <input class="form-control" id="signupEmailInput" placeholder="name@example.com" autocomplete="email" />
+              <div class="alert alert-warning mt-2 py-2 px-3 d-none" id="signupEmailExistsWarn">
+                An account already exists with this email. Please use <b>Log in</b>.
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Password</label>
+              <input class="form-control" id="signupPasswordInput" type="password" placeholder="Create a password" autocomplete="new-password" />
+              <div class="mt-2 small" id="signupPasswordRules">
+                <div class="text-secondary">Password must contain:</div>
+                <div class="mt-1" id="pwdRuleLen">- At least 7 characters</div>
+                <div id="pwdRuleUpper">- 1 uppercase letter (A-Z)</div>
+                <div id="pwdRuleNum">- 1 number (0-9)</div>
+                <div id="pwdRuleSpecial">- 1 special character (!@#...)</div>
+                <div class="progress mt-2" style="height: 8px;">
+                  <div class="progress-bar" id="pwdStrengthBar" role="progressbar" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label class="form-label">Confirm password</label>
+              <input class="form-control" id="signupConfirmPasswordInput" type="password" placeholder="Confirm your password" autocomplete="new-password" />
+              <div class="form-text" id="pwdMatchHint"></div>
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <button class="btn btn-primary" id="signupSendOtpBtn" type="button">Send OTP</button>
+              <a class="btn btn-outline-secondary" href="index.html">Back</a>
+            </div>
+
+            <div class="mt-4 d-none" id="signupOtpSection">
+              <hr />
+              <div class="fw-semibold">Enter OTP</div>
+
+              <div class="mt-3">
+                <label class="form-label">OTP</label>
+                <input class="form-control" id="signupOtpInput" placeholder="123456" inputmode="numeric" autocomplete="one-time-code" />
+                <div class="form-text" id="signupOtpHint"></div>
+              </div>
+
+              <div class="mt-3 d-flex gap-2">
+                <button class="btn btn-success" id="signupVerifyOtpBtn" type="button">Verify & Create account</button>
+                <button class="btn btn-outline-secondary" id="signupResendOtpBtn" type="button">Resend OTP</button>
+              </div>
+            </div>
+
+            <div class="alert alert-danger mt-4 d-none" id="signupError"></div>
+          </div>
+
+          <div class="mt-3 d-none" id="loginBox">
+            <div class="h5 fw-semibold mb-1">Welcome back</div>
+            <div class="text-secondary small">Log in with an OTP sent to your email.</div>
+
+            <div class="mt-3">
+              <label class="form-label">Email</label>
+              <input class="form-control" id="loginEmailInput" placeholder="name@example.com" autocomplete="email" />
+            </div>
+
+            <div class="mt-3 d-none">
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <input class="form-control" id="loginPasswordInput" type="password" placeholder="Your password" autocomplete="current-password" />
+                <button class="btn btn-outline-secondary" id="loginShowPasswordBtn" type="button" aria-pressed="false">Show</button>
+              </div>
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <button class="btn btn-success d-none" id="loginBtn" type="button">Log in</button>
+              <button class="btn btn-primary" id="loginRequestOtpBtn" type="button">Send OTP</button>
+              <button class="btn btn-outline-secondary" id="loginBackToPasswordBtn" type="button">Use password instead</button>
+              <button class="btn btn-outline-secondary d-none" id="loginUseOtpBtn" type="button">Use OTP instead</button>
+              <a class="btn btn-outline-secondary" href="index.html">Back</a>
+            </div>
+
+            <div class="mt-4 d-none" id="loginOtpSection">
+              <hr />
+              <div class="fw-semibold">Enter OTP</div>
+
+              <div class="mt-3">
+                <label class="form-label">OTP</label>
+                <input class="form-control" id="loginOtpInput" placeholder="123456" inputmode="numeric" autocomplete="one-time-code" />
+                <div class="form-text" id="loginOtpHint"></div>
+              </div>
+
+              <div class="mt-3 d-flex gap-2">
+                <button class="btn btn-success" id="loginVerifyOtpBtn" type="button">Verify & Sign in</button>
+                <button class="btn btn-outline-secondary" id="loginResendOtpBtn" type="button">Resend OTP</button>
+              </div>
+            </div>
+
+            <div class="alert alert-danger mt-4 d-none" id="loginError"></div>
+          </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <div class="small text-secondary">Sign up uses OTP verification to create an account. Log in uses your password.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="shop.js?v=23"></script>
+  </body>
+</html>

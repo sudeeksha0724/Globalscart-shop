@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power BI · GlobalCart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background:#0b1220;">
+      <div class="container-fluid px-3">
+        <a class="navbar-brand fw-semibold" href="/shop/">GlobalCart Analytics</a>
+        <div class="d-flex gap-2 align-items-center ms-auto">
+          <a class="btn btn-sm btn-outline-light" href="/shop/">Shop</a>
+          <a class="btn btn-sm btn-outline-light" href="/admin/">Admin</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="gc-bi-root">
+      <div class="container-fluid p-3">
+        <div class="alert alert-info" id="biMissing">
+          <div class="fw-semibold">Power BI embed is not configured yet.</div>
+          <div class="small mt-1">
+            To show your Power BI report here:
+            <ol class="mb-0 mt-2">
+              <li>Create the report in Power BI Desktop (Windows VM/PC)</li>
+              <li>Publish to Power BI Service</li>
+              <li>Copy the <strong>Publish to web</strong> iframe <code>src</code> URL</li>
+              <li>Set <code>POWERBI_EMBED_URL</code> in <code>.env</code> and restart the server</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="gc-bi-frame-wrap">
+        <iframe
+          id="biFrame"
+          title="Power BI Report"
+          class="gc-bi-frame"
+          frameborder="0"
+          allowfullscreen="true"
+        ></iframe>
+      </div>
+    </main>
+
+    <script src="bi.js"></script>
+  </body>
+</html>

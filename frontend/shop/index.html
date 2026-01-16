@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlobalSCART Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="shop.css?v=43" rel="stylesheet" />
+    <style>
+      html.gc-intro-loading body > * { visibility: hidden; }
+      html.gc-intro-loading body > .gc-brand-intro { visibility: visible; }
+    </style>
+    <script>
+      (function () {
+        try {
+          let force = false;
+          try {
+            const q = new URL(window.location.href).searchParams;
+            force = q.get('intro') === '1';
+          } catch {
+          }
+          try {
+            if (sessionStorage.getItem('gc_force_brand_intro_shop') === '1') force = true;
+          } catch {
+          }
+          if (force) document.documentElement.classList.add('gc-intro-loading');
+        } catch {
+        }
+      })();
+    </script>
+  </head>
+  <body data-page="home">
+    <script>
+      (function () {
+        try {
+          let force = false;
+          try {
+            const q = new URL(window.location.href).searchParams;
+            force = q.get('intro') === '1';
+          } catch {
+          }
+          try {
+            if (sessionStorage.getItem('gc_force_brand_intro_shop') === '1') force = true;
+          } catch {
+          }
+          if (!force) return;
+          if (document.querySelector('.gc-brand-intro')) return;
+          const overlay = document.createElement('div');
+          overlay.className = 'gc-brand-intro';
+          overlay.innerHTML = '<div class="gc-brand-stack"><div class="gc-brand-word">G<span class="gc-brand-expand">lobal</span>SCART</div><div class="gc-brand-sub">Welcome</div></div>';
+          overlay.addEventListener('animationend', (e) => {
+            if (e && e.animationName === 'gc-brand-out') overlay.remove();
+          });
+          document.body.appendChild(overlay);
+          try {
+            document.documentElement.classList.remove('gc-intro-loading');
+          } catch {
+          }
+        } catch {
+        }
+      })();
+    </script>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background:#0b1220;">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="index.html">GlobalSCART Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="orders.html">Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="wishlist.html">Wishlist <span class="badge text-bg-secondary ms-1" data-wishlist-count>0</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="emails.html">Inbox</a></li>
+            <li class="nav-item"><a class="nav-link" href="/bi/">Analytics</a></li>
+          </ul>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="badge text-bg-secondary" id="navCustomerLabel">Guest</span>
+            <a class="btn btn-sm btn-outline-light" id="navSignInLink" href="login.html">Sign in</a>
+            <button class="btn btn-sm btn-outline-light d-none" id="navSignOut" type="button">Sign out</button>
+            <a class="btn btn-sm btn-primary" href="cart.html">Cart <span class="badge text-bg-light ms-1" data-cart-count>0</span></a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="gc-hero py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4 align-items-end">
+          <div class="col-lg-7">
+            <h1 class="display-6 fw-semibold mb-2">Welcome to GlobalSCART Shop</h1>
+            <p class="gc-muted mb-3">Use the search and filters to find products quickly.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge text-bg-light">Fast delivery</span>
+              <span class="badge text-bg-light">Secure checkout</span>
+              <span class="badge text-bg-light">Easy returns</span>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="row g-2">
+              <div class="col-12">
+                <input class="form-control" id="searchInput" placeholder="Search products" />
+              </div>
+              <div class="col-12 col-sm-6">
+                <select class="form-select" id="cat1Select"></select>
+              </div>
+              <div class="col-12 col-sm-6">
+                <select class="form-select" id="cat2Select">
+                  <option value="">All subcategories</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6">
+                <select class="form-select" id="brandSelect">
+                  <option value="">All brands</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <input class="form-control" id="minPriceInput" type="number" min="0" step="1" placeholder="Min price" />
+              </div>
+              <div class="col-6">
+                <input class="form-control" id="maxPriceInput" type="number" min="0" step="1" placeholder="Max price" />
+              </div>
+              <div class="col-12">
+                <select class="form-select" id="sortSelect">
+                  <option value="default">Sort: Default</option>
+                  <option value="best_sellers">Sort: Best sellers</option>
+                  <option value="price_asc">Sort: Price (low to high)</option>
+                  <option value="price_desc">Sort: Price (high to low)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="container py-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="small text-secondary" id="resultsCount">Loading…</div>
+        <button class="btn btn-sm btn-outline-secondary" id="clearFiltersBtn" type="button">Clear</button>
+      </div>
+      <div class="row g-3" id="productGrid"></div>
+      <div class="d-flex justify-content-center py-4">
+        <button class="btn btn-outline-primary" id="loadMoreBtn" type="button">Load more</button>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="shop.js?v=23"></script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+:root {
+  --gc-dark: #131921;
+  --gc-accent: #febd69;
+}
+
+body {
+  background: #f6f7fb;
+}
+
+.navbar-globalcart {
+  background: var(--gc-dark);
+}
+
+.navbar-globalcart .navbar-brand,
+.navbar-globalcart .nav-link {
+  color: #fff;
+}
+
+.navbar-globalcart .nav-link:hover {
+  color: var(--gc-accent);
+}
+
+.btn-accent {
+  background: var(--gc-accent);
+  border-color: var(--gc-accent);
+  color: #111;
+}
+
+.btn-accent:hover {
+  filter: brightness(0.95);
+}
+
+.product-card-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-detail-img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.badge-cart {
+  background: var(--gc-accent);
+  color: #111;
+}

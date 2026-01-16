@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>GlobalSCART | Admin Audit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/admin/styles.css?v=13" rel="stylesheet" />
+  </head>
+  <body data-page="audit">
+    <nav class="navbar navbar-expand-lg navbar-globalcart">
+      <div class="container-fluid px-3 px-lg-4">
+        <a class="navbar-brand fw-bold" href="/admin/">GlobalSCART Admin</a>
+        <div class="collapse navbar-collapse show" id="nav">
+          <ul class="navbar-nav ms-auto gap-2">
+            <li class="nav-item"><a class="nav-link" href="/admin/">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/analytics.html">Analytics</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/admin/audit.html">Audit Log</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/journey.html">Journey Replay</a></li>
+            <li class="nav-item"><button id="adminLogoutBtn" class="btn btn-sm btn-outline-light" type="button">Logout</button></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container-fluid py-3 px-3 px-lg-4">
+      <div class="gc-page-header mb-3">
+        <div>
+          <div class="gc-page-title">Audit Log</div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <div class="card shadow-sm gc-surface" id="adminLoginCard">
+            <div class="card-body">
+              <div class="fw-semibold mb-2">Admin Login</div>
+
+              <div class="mb-2">
+                <label class="form-label small mb-1">Admin ID</label>
+                <input id="adminUser" class="form-control" placeholder="admin" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label small mb-1">Password</label>
+                <input id="adminPass" class="form-control" type="password" placeholder="admin" />
+              </div>
+
+              <button id="adminLoginBtn" class="btn btn-outline-primary w-100" type="button">Login</button>
+              <div class="text-muted small mt-2" id="adminLoginStatus"></div>
+            </div>
+          </div>
+
+          <div class="d-none" id="adminContent">
+            <div class="card shadow-sm gc-surface">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fw-semibold">Audit Log</div>
+                  <button class="btn btn-sm btn-accent" id="refreshAuditBtn" type="button">Refresh</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <section class="card shadow-sm gc-surface">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle gc-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Order ID</th>
+                      <th>Action</th>
+                      <th>Reason</th>
+                      <th>Actor</th>
+                    </tr>
+                  </thead>
+                  <tbody id="auditTbody">
+                    <tr><td colspan="5" class="text-muted">Login to load audit log</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div id="pageError" class="text-danger small mt-3"></div>
+    </main>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">GlobalSCART Admin</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">...</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/admin/app.js?v=15"></script>
+  </body>
+</html>
