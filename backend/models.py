@@ -196,6 +196,19 @@ class AuthLoginOut(BaseModel):
     display_name: Optional[str] = None
 
 
+class AuthTokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class AuthMeOut(BaseModel):
+    email: str
+    customer_id: int
+    geo_id: int
+    display_name: Optional[str] = None
+    role: str
+
+
 class AdminLoginIn(BaseModel):
     username: str
     password: str

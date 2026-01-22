@@ -1619,7 +1619,7 @@ async function initHome() {
 
     const view = applyClientFilters(items);
     if (resultsCountEl) {
-      resultsCountEl.textContent = `${view.length} product${view.length === 1 ? '' : 's'}${all.length ? ` (loaded: ${all.length})` : ''}`;
+      resultsCountEl.textContent = '';
     }
 
     if (!view.length) {

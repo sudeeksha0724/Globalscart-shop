@@ -14,7 +14,6 @@ from fastapi.staticfiles import StaticFiles
 from .routes.addresses import router as addresses_router
 from .routes.api_admin import router as api_admin_router
 from .routes.api_auth import router as api_auth_router
-from .routes.api_config import router as api_config_router
 from .routes.api_customer import router as api_customer_router
 from .routes.api_events import router as api_events_router
 from .analytics.admin_analytics import router as admin_analytics_router
@@ -122,13 +121,11 @@ app.include_router(api_events_router)
 app.include_router(api_admin_router)
 app.include_router(admin_analytics_router)
 app.include_router(api_auth_router)
-app.include_router(api_config_router)
 
 
 _FRONTEND_ROOT = _PROJECT_ROOT / "frontend"
 _SHOP_DIR = (_FRONTEND_ROOT / "shop") if (_FRONTEND_ROOT / "shop").exists() else (_FRONTEND_ROOT / "customer")
 _ADMIN_DIR = _FRONTEND_ROOT / "admin"
-_BI_DIR = _FRONTEND_ROOT / "bi"
 _ASSETS_DIR = _FRONTEND_ROOT / "assets"
 _STATIC_ROOT = _PROJECT_ROOT / "static"
 
@@ -143,9 +140,6 @@ if _SHOP_DIR.exists():
 
 if _ADMIN_DIR.exists():
     app.mount("/admin", StaticFiles(directory=str(_ADMIN_DIR), html=True), name="admin")
-
-if _BI_DIR.exists():
-    app.mount("/bi", StaticFiles(directory=str(_BI_DIR), html=True), name="bi")
 
 
 @app.get("/")
@@ -163,8 +157,3 @@ def shop_home():
 @app.get("/admin")
 def admin_home():
     return RedirectResponse(url="/admin/")
-
-
-@app.get("/bi")
-def bi_home():
-    return RedirectResponse(url="/bi/")

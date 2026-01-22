@@ -61,8 +61,11 @@ def _stable_discount_pct(product_id: int) -> int:
 def _demo_catalog(
     limit: int,
     offset: int,
+    q: str | None,
     category_l1: str | None,
     category_l2: str | None,
+    min_price: float | None,
+    max_price: float | None,
     sort_key: str,
 ) -> List[ProductOut]:
     brands = [
@@ -86,6 +89,7 @@ def _demo_catalog(
     max_pid = 240
     start = max(1, int(offset) + 1)
     end = min(max_pid, start + int(limit) - 1)
+    q_norm = (q or "").strip().lower()
     for pid in range(start, end + 1):
         c1, l2s = cats[pid % len(cats)]
         c2 = l2s[(pid // len(cats)) % len(l2s)]
@@ -100,6 +104,16 @@ def _demo_catalog(
         list_price = float(299 + ((pid * 37) % 2200))
         disc = _stable_discount_pct(pid)
         sell_price = round(list_price * (1 - disc / 100.0), 2)
+
+        if min_price is not None and list_price < float(min_price):
+            continue
+        if max_price is not None and list_price > float(max_price):
+            continue
+
+        if q_norm:
+            hay = f"{sku} {name} {brand} {c1} {c2}".lower()
+            if q_norm not in hay:
+                continue
 
         items.append(
             ProductOut(
@@ -1031,8 +1045,11 @@ def resolve_customer(req: CustomerResolveIn, admin_key: str | None = Header(None
 def list_products(
     limit: int = Query(24, ge=1, le=200),
     offset: int = Query(0, ge=0),
+    q: str | None = Query(None),
     category_l1: str | None = Query(None),
     category_l2: str | None = Query(None),
+    min_price: float | None = Query(None, ge=0),
+    max_price: float | None = Query(None, ge=0),
     sort: str = Query("default"),
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
 ):
@@ -1045,12 +1062,25 @@ def list_products(
 
     where = []
     params: List[object] = []
+    q_norm = (q or "").strip()
+    if q_norm:
+        where.append(
+            "(p.product_name ILIKE %s OR p.brand ILIKE %s OR p.sku ILIKE %s OR p.category_l1 ILIKE %s OR p.category_l2 ILIKE %s)"
+        )
+        pat = f"%{q_norm}%"
+        params.extend([pat, pat, pat, pat, pat])
     if category_l1:
         where.append("p.category_l1 = %s")
         params.append(str(category_l1))
     if category_l2:
         where.append("p.category_l2 = %s")
         params.append(str(category_l2))
+    if min_price is not None:
+        where.append("p.list_price >= %s")
+        params.append(float(min_price))
+    if max_price is not None:
+        where.append("p.list_price <= %s")
+        params.append(float(max_price))
 
     join_best = ""
     order_by = "p.product_id"
@@ -1126,8 +1156,11 @@ def list_products(
         return _demo_catalog(
             limit=int(limit),
             offset=int(offset),
+            q=q,
             category_l1=category_l1,
             category_l2=category_l2,
+            min_price=min_price,
+            max_price=max_price,
             sort_key=sort_key,
         )
     except (psycopg.errors.UndefinedTable, psycopg.errors.InvalidSchemaName):

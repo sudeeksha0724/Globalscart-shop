@@ -13,6 +13,7 @@ from fastapi.responses import Response
 import psycopg
 
 from ..db import get_conn
+from ..security import decode_access_token, parse_bearer_token, require_admin_from_token_payload
 from ..models import (
     AdminAuditLogItemOut,
     AdminKpisLatestOut,
@@ -53,7 +54,13 @@ def _to_csv(columns: List[str], rows: List[tuple]) -> str:
     return "\n".join(out) + "\n"
 
 
-def _require_admin(admin_key: str | None) -> None:
+def _require_admin(admin_key: str | None, authorization: str | None = None) -> None:
+    token_str = parse_bearer_token(authorization)
+    if token_str:
+        payload = decode_access_token(token_str)
+        require_admin_from_token_payload(payload)
+        return
+
     expected = os.getenv("ADMIN_KEY", "admin")
     if admin_key != expected:
         raise HTTPException(status_code=403, detail="Admin access required")
@@ -435,9 +442,10 @@ def export_bi_mart_csv(
     mart_name: str,
     limit: int = Query(50000, ge=1, le=200000),
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
 
         allowed = {
             "mart_exec_daily_kpis",
@@ -495,9 +503,13 @@ def admin_login(req: AdminLoginIn) -> AdminLoginOut:
 
 
 @router.get("/kpis/latest", response_model=AdminKpisLatestOut)
-def latest_kpis(label: str | None = Query(None), admin_key: str | None = Header(None, alias="X-Admin-Key")):
+def latest_kpis(
+    label: str | None = Query(None),
+    admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
+):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
         with get_conn() as conn:
             conn.execute("SET TIME ZONE 'UTC';", prepare=False)
             return _fetch_latest_kpis(conn, label=label)
@@ -519,9 +531,10 @@ def audit_log(
     limit: int = Query(200, ge=1, le=500),
     offset: int = Query(0, ge=0),
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
         with get_conn() as conn:
             conn.execute("SET TIME ZONE 'UTC';", prepare=False)
             with conn.cursor() as cur:
@@ -618,9 +631,10 @@ def orders_monitor(
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
         with get_conn() as conn:
             conn.execute("SET TIME ZONE 'UTC';", prepare=False)
             with conn.cursor() as cur:
@@ -683,9 +697,10 @@ def journey_sessions(
     window_hours: int = Query(72, ge=1, le=24 * 30),
     customer_id: int | None = Query(None, ge=1),
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
 
         where = "WHERE event_ts >= (NOW() AT TIME ZONE 'UTC') - (%s * INTERVAL '1 hour')"
         params: list = [int(window_hours)]
@@ -747,8 +762,9 @@ def journey_sessions(
 def admin_product_detail(
     product_id: int,
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
-    _require_admin(admin_key)
+    _require_admin(admin_key, authorization=authorization)
 
     sql = """
         SELECT product_id, sku, product_name, category_l1, category_l2, brand, unit_cost, list_price
@@ -858,9 +874,10 @@ def admin_product_detail(
 def journey_session_events(
     session_id: str,
     admin_key: str | None = Header(None, alias="X-Admin-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ):
     try:
-        _require_admin(admin_key)
+        _require_admin(admin_key, authorization=authorization)
         sid = str(session_id or "").strip()
         if not sid:
             raise HTTPException(status_code=400, detail="session_id is required")

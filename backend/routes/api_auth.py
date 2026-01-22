@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 import httpx
 import psycopg
 
@@ -20,6 +20,8 @@ from ..db import get_conn
 from ..models import (
     AuthLoginIn,
     AuthLoginOut,
+    AuthMeOut,
+    AuthTokenOut,
     AuthEmailExistsOut,
     AuthRequestOtpIn,
     AuthRequestOtpOut,
@@ -30,6 +32,7 @@ from ..models import (
     AuthVerifyOtpIn,
     AuthVerifyOtpOut,
 )
+from ..security import create_access_token, decode_access_token, parse_bearer_token
 
 
 router = APIRouter(prefix="/api/auth", tags=["api_auth"])
@@ -534,7 +537,7 @@ def login(req: AuthLoginIn) -> AuthLoginOut:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT customer_id, geo_id, display_name, password_hash
+                    SELECT customer_id, geo_id, display_name, password_hash, role
                     FROM globalcart.app_users
                     WHERE email = %s;
                     """,
@@ -548,6 +551,7 @@ def login(req: AuthLoginIn) -> AuthLoginOut:
                 geo_id = int(row[1])
                 display_name = row[2]
                 pwd_hash = row[3]
+                role = str(row[4] or "customer")
                 if not pwd_hash:
                     raise HTTPException(status_code=400, detail="Account has no password. Please sign up again.")
 
@@ -568,6 +572,86 @@ def login(req: AuthLoginIn) -> AuthLoginOut:
                 "Auth tables not found. Run: python3 -m src.run_sql --sql sql/07_app_auth.sql"
             ),
         )
+
+
+@router.post("/token", response_model=AuthTokenOut)
+def token(req: AuthLoginIn) -> AuthTokenOut:
+    email = _validate_email(req.email)
+    password = req.password or ""
+    if not password:
+        raise HTTPException(status_code=400, detail="Password is required")
+
+    try:
+        with get_conn() as conn:
+            conn.execute("SET TIME ZONE 'UTC';", prepare=False)
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT customer_id, geo_id, display_name, password_hash, role
+                    FROM globalcart.app_users
+                    WHERE email = %s;
+                    """,
+                    (email,),
+                )
+                row = cur.fetchone()
+                if row is None:
+                    raise HTTPException(status_code=400, detail="Account not found. Please sign up.")
+
+                customer_id = int(row[0])
+                geo_id = int(row[1])
+                display_name = row[2]
+                pwd_hash = row[3]
+                role = str(row[4] or "customer")
+
+                if not pwd_hash:
+                    raise HTTPException(status_code=400, detail="Account has no password. Please sign up again.")
+                if not _password_verify(password, str(pwd_hash)):
+                    raise HTTPException(status_code=401, detail="Invalid email or password")
+
+        access_token = create_access_token(
+            subject=email,
+            role=role,
+            extra={"customer_id": customer_id, "geo_id": geo_id, "display_name": display_name},
+        )
+        return AuthTokenOut(access_token=access_token)
+
+    except psycopg.OperationalError:
+        raise HTTPException(
+            status_code=503,
+            detail="Auth service unavailable (database not reachable). Please try again in a moment.",
+        )
+    except (psycopg.errors.UndefinedTable, psycopg.errors.InvalidSchemaName, psycopg.errors.UndefinedColumn):
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Auth tables not found. Run: python3 -m src.run_sql --sql sql/07_app_auth.sql"
+            ),
+        )
+
+
+@router.get("/me", response_model=AuthMeOut)
+def me(authorization: str | None = Header(None, alias="Authorization")) -> AuthMeOut:
+    token_str = parse_bearer_token(authorization)
+    if not token_str:
+        raise HTTPException(status_code=401, detail="Missing bearer token")
+
+    payload = decode_access_token(token_str)
+    email = str(payload.get("sub") or "").strip().lower()
+    if not email:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    customer_id = payload.get("customer_id")
+    geo_id = payload.get("geo_id")
+    display_name = payload.get("display_name")
+    role = str(payload.get("role") or "customer")
+
+    return AuthMeOut(
+        email=email,
+        customer_id=int(customer_id) if customer_id is not None else 0,
+        geo_id=int(geo_id) if geo_id is not None else 0,
+        display_name=str(display_name) if display_name is not None else None,
+        role=role,
+    )
 
 
 @router.post("/verify-otp", response_model=AuthVerifyOtpOut)

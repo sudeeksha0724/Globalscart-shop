@@ -1,6 +1,8 @@
-# GlobalCart 360: Real-Time E-Commerce Profitability, Retention & Demand Forecasting
+# GlobalCart 360: E-Commerce Analytics Platform (with Demo Storefront + Admin)
 
-GlobalCart 360 is an end-to-end, MNC-level analytics project for a global e-commerce business. It delivers a **single source of truth** (PostgreSQL star schema), **near real-time KPIs**, **customer retention analytics** (RFM + churn + cohorts), **profit leakage analysis**, **revenue/demand forecasting**, a **demo-ready customer storefront with funnel tracking**, and an **admin dashboard**.
+GlobalCart 360 is an end-to-end analytics platform for a global e-commerce business. It delivers a **single source of truth** (PostgreSQL star schema), **near real-time KPIs**, **customer retention analytics** (RFM + churn + cohorts), **profit leakage analysis**, **revenue/demand forecasting**, a **demo customer storefront** (for funnel tracking and UX walkthrough), and an **admin dashboard**.
+
+Note: this repository is primarily focused on analytics, KPI consistency, and data/BI workflows. The storefront/admin routes are intended for demonstration and are not positioned as a full production e-commerce system (payments, full checkout, etc.).
 
 ## Tech Stack
 - SQL: PostgreSQL

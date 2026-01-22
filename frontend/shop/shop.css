@@ -49,10 +49,10 @@ main {
 }
 
 body[data-page="home"] .gc-hero {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  pointer-events: none;
+  position: relative;
+  top: auto;
+  z-index: auto;
+  pointer-events: auto;
 }
 
 body[data-page="home"] .gc-hero .container {
@@ -64,8 +64,8 @@ body[data-page="home"] .gc-hero .container {
 body[data-page="home"] main {
   position: relative;
   z-index: 2;
-  margin-top: -110px;
-  padding-top: 110px;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 body[data-page="home"] #productGrid > .gc-reveal {

@@ -27,7 +27,8 @@ CREATE INDEX IF NOT EXISTS idx_app_email_otps_expires_at ON globalcart.app_email
 
 ALTER TABLE IF EXISTS globalcart.app_users
   ADD COLUMN IF NOT EXISTS display_name VARCHAR(120),
-  ADD COLUMN IF NOT EXISTS password_hash TEXT;
+  ADD COLUMN IF NOT EXISTS password_hash TEXT,
+  ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'customer';
 
 ALTER TABLE IF EXISTS globalcart.app_email_otps
   ADD COLUMN IF NOT EXISTS purpose VARCHAR(32) NOT NULL DEFAULT 'SIGNUP',
