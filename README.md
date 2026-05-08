@@ -23,6 +23,52 @@ GlobalCart 360 is a **dual-purpose system**:
 
 For the “mixed concerns” story (analytics + APIs + UI + BI assets), see: `docs/architecture.md`.
 
+## Demo Screenshots
+
+### Customer Storefront
+
+**Welcome / Landing**
+<img src="screenshots/01-welcome-screen.png" width="800"/>
+
+**Sign Up (OTP-based)**
+<img src="screenshots/02-signup.png" width="800"/>
+
+**Log In**
+<img src="screenshots/03-login.png" width="800"/>
+
+**Shop Home — Product Catalog & Filters**
+<img src="screenshots/04-shop-home.png" width="800"/>
+
+**Wishlist**
+<img src="screenshots/05-wishlist.png" width="800"/>
+
+**Cart**
+<img src="screenshots/06-cart.png" width="800"/>
+
+**Checkout — Delivery & Payment**
+<img src="screenshots/07-checkout-top.png" width="800"/>
+<img src="screenshots/08-checkout-bottom.png" width="800"/>
+
+**Order History**
+<img src="screenshots/09-orders.png" width="800"/>
+
+**Inbox / Notifications**
+<img src="screenshots/10-inbox.png" width="800"/>
+
+### Admin Dashboard
+
+**Admin Login**
+<img src="screenshots/11-admin-login.png" width="800"/>
+
+**Analytics — Revenue, Funnel & Top Products**
+<img src="screenshots/12-admin-analytics.png" width="800"/>
+
+**Audit Log — Order State Changes**
+<img src="screenshots/13-admin-audit.png" width="800"/>
+
+**User Journey Replay**
+<img src="screenshots/14-admin-journey.png" width="800"/>
+
 ## Tech Stack
 - SQL: PostgreSQL
 - Python: FastAPI, pandas, numpy, seaborn/matplotlib, scikit-learn, statsmodels
